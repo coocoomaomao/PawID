@@ -15,17 +15,17 @@
         <div class="brand-mark" aria-hidden="true">🐾</div>
         <div><b>PawID</b><span>毛球身份卡</span></div>
       </div>
-      <span class="lab-badge">喵造实验室 · 008 · v0.3</span>
+      <span class="lab-badge">喵造实验室 · 008 · v0.4</span>
     </header>
 
     <main>
       <section class="hero">
         <div class="hero-copy">
           <span class="eyebrow">PET IDENTITY LAB</span>
-          <h1>一张照片是可爱，<br><em>三张照片是一份毛球档案。</em></h1>
-          <p>本地 AI 分析品种外观相似度，再把多图一致性、被毛色板与视觉纹理做成一张可以分享的《毛球身份鉴定报告》。</p>
+          <h1>先认出它是谁，<br><em>再给它一本自己的护照。</em></h1>
+          <p>v0.4 把本地 AI 身份档案和主人观察问卷合在一起：生成毛球护照、五维性格雷达图和专属性格卡。</p>
           <div class="hero-pills">
-            <span>真实本地 AI</span><span>照片不上传</span><span>多图一致性</span><span>被毛色板</span><span>3:4 分享报告</span>
+            <span>真实本地 AI</span><span>毛球护照</span><span>五维性格雷达</span><span>性格称号</span><span>照片不上传</span>
           </div>
         </div>
         <div class="mascot-card">
@@ -38,13 +38,13 @@
             <path d="M116 151q8-6 16 0-8 9-16 0Z" fill="#e5a39b"/><path d="M106 161q18 17 36 0" fill="none" stroke="#f0d1ca" stroke-width="5" stroke-linecap="round"/>
             <path d="M111 60q10-23 20 2-8-4-10 10-4-11-10-12Z" fill="#6be0b1"/>
           </svg>
-          <div class="mascot-note">“先别急着说混血，本猫只接受外观相似度。”</div>
+          <div class="mascot-note">“护照可以办，性格请以本猫当天心情为准。”</div>
         </div>
       </section>
 
       <section class="panel upload-panel" id="uploadPanel">
         <div class="section-title"><div><small>STEP 01</small><h2>上传毛孩子照片</h2></div><span>最多 3 张</span></div>
-        <p class="hint">推荐：正脸 + 侧脸 + 全身照。v0.3 会综合多张照片，还会比较每张照片的识别结果是否一致。</p>
+        <p class="hint">推荐：正脸 + 侧脸 + 全身照。v0.4 会继续综合多张照片，并把身份结果写入毛球护照与性格分享卡。</p>
         <div class="photo-grid" id="photoGrid"></div>
         <label class="upload-box" id="uploadBox">
           <input id="photoInput" type="file" accept="image/*" multiple hidden />
@@ -79,7 +79,7 @@
       </section>
 
       <section class="panel visual-panel" id="visualPanel" hidden>
-        <div class="section-title"><div><small>STEP 04</small><h2>视觉档案</h2></div><span>v0.3 新增</span></div>
+        <div class="section-title"><div><small>STEP 04</small><h2>视觉档案</h2></div><span>视觉档案</span></div>
         <div class="visual-grid">
           <article class="metric-card">
             <small>多图一致性</small>
@@ -119,20 +119,59 @@
         </div>
       </section>
 
+      <section class="panel personality-panel" id="personalityPanel" hidden>
+        <div class="section-title"><div><small>STEP 06</small><h2>主人观察性格问卷</h2></div><span>v0.4 新增</span></div>
+        <p class="hint">这不是 AI 看脸猜性格。请按你平时对它的观察打分：1 = 很不像，5 = 非常像。</p>
+        <div class="quiz-grid">
+          <label class="quiz-item"><div><b>喜欢主动贴贴 / 靠近人</b><span id="q1v">3</span></div><input id="q1" type="range" min="1" max="5" value="3"></label>
+          <label class="quiz-item"><div><b>见到熟人会主动迎接</b><span id="q2v">3</span></div><input id="q2" type="range" min="1" max="5" value="3"></label>
+          <label class="quiz-item"><div><b>每天都有明显的跑酷 / 玩耍时间</b><span id="q3v">3</span></div><input id="q3" type="range" min="1" max="5" value="3"></label>
+          <label class="quiz-item"><div><b>很难长时间安静待着</b><span id="q4v">3</span></div><input id="q4" type="range" min="1" max="5" value="3"></label>
+          <label class="quiz-item"><div><b>家里出现新东西会第一时间研究</b><span id="q5v">3</span></div><input id="q5" type="range" min="1" max="5" value="3"></label>
+          <label class="quiz-item"><div><b>喜欢探索箱子、柜子、角落</b><span id="q6v">3</span></div><input id="q6" type="range" min="1" max="5" value="3"></label>
+          <label class="quiz-item"><div><b>一听到零食 / 开罐头就会出现</b><span id="q7v">3</span></div><input id="q7" type="range" min="1" max="5" value="3"></label>
+          <label class="quiz-item"><div><b>为了吃的愿意配合很多事情</b><span id="q8v">3</span></div><input id="q8" type="range" min="1" max="5" value="3"></label>
+          <label class="quiz-item"><div><b>面对陌生人 / 声音恢复得比较快</b><span id="q9v">3</span></div><input id="q9" type="range" min="1" max="5" value="3"></label>
+          <label class="quiz-item"><div><b>到了新环境也敢主动活动</b><span id="q10v">3</span></div><input id="q10" type="range" min="1" max="5" value="3"></label>
+        </div>
+        <div class="personality-result">
+          <canvas id="radarCanvas" width="700" height="520"></canvas>
+          <div class="personality-copy">
+            <small>主人观察结果</small>
+            <h3 id="personalityTitle">五边形小明星</h3>
+            <p id="personalityDesc">调整上面的滑杆，就能生成它的专属性格画像。</p>
+            <div class="personality-scores" id="personalityScores"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel pet-passport-panel" id="petPassportPanel" hidden>
+        <div class="section-title"><div><small>STEP 07</small><h2>毛球护照</h2></div><span>非官方纪念卡</span></div>
+        <canvas id="petPassportCanvas" width="900" height="1200"></canvas>
+        <button class="secondary" id="downloadPassportBtn">下载毛球护照 PNG</button>
+        <p class="hint">这是 PawID 生成的纪念分享卡，不是政府、航空公司或检疫机构签发的旅行证件。</p>
+      </section>
+
+      <section class="panel personality-card-panel" id="personalityCardPanel" hidden>
+        <div class="section-title"><div><small>STEP 08</small><h2>毛球性格卡</h2></div><span>3:4 分享图</span></div>
+        <canvas id="personalityCardCanvas" width="900" height="1200"></canvas>
+        <button class="secondary" id="downloadPersonalityBtn">下载性格卡 PNG</button>
+      </section>
+
       <section class="panel report-panel" id="reportPanel" hidden>
-        <div class="section-title"><div><small>STEP 06</small><h2>毛球身份鉴定报告</h2></div><span>3:4 分享图</span></div>
+        <div class="section-title"><div><small>STEP 09</small><h2>毛球身份鉴定报告</h2></div><span>3:4 分享图</span></div>
         <canvas id="reportCanvas" width="900" height="1200"></canvas>
         <button class="secondary" id="downloadReportBtn">下载身份鉴定报告 PNG</button>
       </section>
 
       <section class="panel id-panel" id="idPanel" hidden>
-        <div class="section-title"><div><small>STEP 07</small><h2>毛球身份卡</h2></div><span>可分享</span></div>
+        <div class="section-title"><div><small>STEP 10</small><h2>毛球身份卡</h2></div><span>可分享</span></div>
         <canvas id="idCanvas" width="900" height="1200"></canvas>
         <button class="secondary" id="downloadIdBtn">下载身份卡 PNG</button>
       </section>
 
       <section class="panel passport-panel" id="passportPanel" hidden>
-        <div class="section-title"><div><small>STEP 08</small><h2>四色宠物证件照</h2></div><span>AI 抠图换背景</span></div>
+        <div class="section-title"><div><small>STEP 11</small><h2>四色宠物证件照</h2></div><span>AI 抠图换背景</span></div>
         <div class="passport-grid" id="passportGrid"></div>
         <p class="hint">点击任意证件照即可下载 1024×1024 PNG。</p>
       </section>

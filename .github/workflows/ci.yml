@@ -18,9 +18,13 @@ jobs:
           node --check app.js
           node --check breed-ai.js
           node --check sw.js
+          node --check electron/main.cjs
+          node --check scripts/build-icon.cjs
       - name: Validate required files
         run: |
           test -f index.html
           test -f styles.css
           test -f manifest.webmanifest
           test -f README.md
+          test -f package.json
+          test -f build/icon.svg

@@ -1,0 +1,59 @@
+{
+  "name": "pawid-desktop",
+  "version": "0.4.0",
+  "description": "PawID 毛球身份卡 - local AI pet identity, passport and personality cards",
+  "author": "MeowBuild Lab",
+  "license": "MIT",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "start": "npm run build:icon && electron .",
+    "dist:win": "npm run build:icon && electron-builder --win nsis --publish never",
+    "build:icon": "node scripts/build-icon.cjs"
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.12",
+    "sharp": "^0.34.4",
+    "png-to-ico": "^3.0.1"
+  },
+  "build": {
+    "appId": "com.meowbuild.pawid",
+    "productName": "PawID 毛球身份卡",
+    "asar": true,
+    "files": [
+      "index.html",
+      "styles.css",
+      "app.js",
+      "breed-ai.js",
+      "manifest.webmanifest",
+      "sw.js",
+      "electron/**/*",
+      "README.md",
+      "build/**/*"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "forceCodeSigning": false,
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "PawID 毛球身份卡",
+      "deleteAppDataOnUninstall": false,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico"
+    }
+  }
+}

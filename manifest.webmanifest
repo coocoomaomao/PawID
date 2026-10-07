@@ -1,9 +1,9 @@
 {
-  "name": "PawID 毛球身份卡 v0.3",
+  "name": "PawID 毛球身份卡 v0.4",
   "short_name": "PawID",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#f6f2ea",
   "theme_color": "#171b22",
-  "description": "本地 AI 宠物外观相似度、视觉档案、身份报告与证件照工具"
+  "description": "本地 AI 宠物身份档案、毛球护照、性格雷达、身份报告与证件照工具"
 }

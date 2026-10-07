@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#171B22" />
+  <title>PawID 毛球身份卡</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">🐾</div>
+        <div><b>PawID</b><span>毛球身份卡</span></div>
+      </div>
+      <span class="lab-badge">喵造实验室 · 008</span>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">PET IDENTITY LAB</span>
+          <h1>它陪了你这么久，<br><em>你真的知道它是什么猫吗？</em></h1>
+          <p>上传 1–3 张照片，分析外观特征、品种相似度，并生成专属毛球身份卡。</p>
+          <div class="hero-pills"><span>猫 / 狗</span><span>本地预览</span><span>证件照生成</span></div>
+        </div>
+        <div class="mascot-card">
+          <svg viewBox="0 0 220 220" role="img" aria-label="墨团黑猫">
+            <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1f232b"/><stop offset="1" stop-color="#080a0d"/></linearGradient></defs>
+            <path d="M48 89 58 32l40 35c8-3 16-5 25-5s18 2 27 6l38-37 11 60c13 14 21 33 21 55 0 50-45 77-97 77S26 196 26 146c0-22 8-42 22-57Z" fill="url(#g)"/>
+            <path d="M61 39 69 78 92 66Z" fill="#e78b87"/><path d="m187 39-9 40-23-12Z" fill="#e78b87"/>
+            <ellipse cx="86" cy="127" rx="19" ry="25" fill="#e7c64b"/><ellipse cx="158" cy="127" rx="19" ry="25" fill="#e7c64b"/>
+            <ellipse cx="90" cy="130" rx="8" ry="14"/><ellipse cx="154" cy="130" rx="8" ry="14"/><circle cx="96" cy="120" r="4" fill="#fff"/><circle cx="160" cy="120" r="4" fill="#fff"/>
+            <path d="M116 151q8-6 16 0-8 9-16 0Z" fill="#e5a39b"/><path d="M106 161q18 17 36 0" fill="none" stroke="#f0d1ca" stroke-width="5" stroke-linecap="round"/>
+            <path d="M111 60q10-23 20 2-8-4-10 10-4-11-10-12Z" fill="#6be0b1"/>
+          </svg>
+          <div class="mascot-note">“正在研究这张可爱的脸……”</div>
+        </div>
+      </section>
+
+      <section class="panel upload-panel" id="uploadPanel">
+        <div class="section-title"><div><small>STEP 01</small><h2>上传毛孩子照片</h2></div><span>最多 3 张</span></div>
+        <p class="hint">建议：正脸 + 侧脸 + 全身照。照片越清晰，未来接入视觉模型后的判断越稳定。</p>
+        <div class="photo-grid" id="photoGrid"></div>
+        <label class="upload-box" id="uploadBox">
+          <input id="photoInput" type="file" accept="image/*" multiple hidden />
+          <div class="upload-icon">＋</div><b>选择照片</b><span>JPG / PNG / WebP</span>
+        </label>
+      </section>
+
+      <section class="panel profile-panel">
+        <div class="section-title"><div><small>STEP 02</small><h2>毛孩子档案</h2></div><span>可选</span></div>
+        <div class="form-grid">
+          <label>名字<input id="petName" placeholder="例如：墨团" value="墨团" /></label>
+          <label>物种<select id="species"><option value="猫">猫</option><option value="狗">狗</option></select></label>
+          <label>年龄<input id="petAge" placeholder="例如：3岁" /></label>
+          <label>体重（kg）<input id="petWeight" type="number" step="0.1" min="0" placeholder="5.2" /></label>
+        </div>
+        <button class="primary" id="analyzeBtn">开始 AI 外观分析 <span>→</span></button>
+        <p class="model-note">当前 v0.1 已完成完整前端流程。真实品种识别接口尚未接入，因此不会伪造 AI 结果。</p>
+      </section>
+
+      <section class="panel result-panel" id="resultPanel" hidden>
+        <div class="section-title"><div><small>STEP 03</small><h2>外观分析报告</h2></div><span class="status">接口待接入</span></div>
+        <div class="notice"><b>AI 品种识别尚未启用</b><p>独立应用需要安全的服务端视觉模型接口。当前先展示结果页结构和证件照 / 身份卡功能。</p></div>
+        <div class="breed-grid" id="breedGrid">
+          <div class="breed-card ghost"><span>TOP 1</span><b>等待视觉模型分析</b><div class="bar"><i style="width:0%"></i></div></div>
+          <div class="breed-card ghost"><span>TOP 2</span><b>—</b><div class="bar"><i style="width:0%"></i></div></div>
+          <div class="breed-card ghost"><span>TOP 3</span><b>—</b><div class="bar"><i style="width:0%"></i></div></div>
+        </div>
+        <div class="traits">
+          <span>毛色：待分析</span><span>毛长：待分析</span><span>眼睛：待分析</span><span>脸型：待分析</span>
+        </div>
+      </section>
+
+      <section class="panel id-panel" id="idPanel" hidden>
+        <div class="section-title"><div><small>STEP 04</small><h2>毛球身份卡</h2></div><span>可分享</span></div>
+        <canvas id="idCanvas" width="900" height="1200"></canvas>
+        <button class="secondary" id="downloadIdBtn">下载身份卡 PNG</button>
+      </section>
+
+      <section class="panel passport-panel" id="passportPanel" hidden>
+        <div class="section-title"><div><small>STEP 05</small><h2>四色宠物证件照</h2></div><span>自动裁切</span></div>
+        <div class="passport-grid" id="passportGrid"></div>
+        <p class="hint">点击任意证件照即可下载 1024×1024 PNG。</p>
+      </section>
+    </main>
+
+    <footer><b>PawID 毛球身份卡</b><span>喵造实验室 · 记录身份，也记录陪伴</span></footer>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>

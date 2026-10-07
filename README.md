@@ -1,22 +1,70 @@
 # PawID 毛球身份卡
 
-喵造实验室 008。宠物外观分析、身份卡与证件照工具。
+喵造实验室 008。一个以隐私优先为核心的宠物身份卡、品种外观相似度与 AI 证件照工具。
 
-## v0.1 原型
-- 上传 1–3 张宠物照片
-- 宠物基础档案
-- AI 品种相似度结果页（接口占位，未伪造结果）
-- 毛球身份卡 PNG
-- 白 / 蓝 / 粉 / 薄荷绿四色宠物证件照
+## v0.2
+
+- 上传 1–3 张猫 / 狗照片
+- **真实本地 AI**：浏览器内运行 ONNX 模型，照片不上传
+- 综合多张照片输出 Top 3 品种外观相似度
+- 37 个 Oxford-IIIT Pet 已知品种
+- 猫 / 狗物种判断
+- 低置信度 / 陌生分布提示
+- 基于宠物分割 mask 的自动抠图
+- 白 / 蓝 / 粉 / 薄荷绿四色 1024×1024 证件照
+- 900×1200 毛球身份卡
+- 被毛主色的简单像素估算
 - PWA 基础支持
 
-## 识别边界
-仅凭照片无法证明纯种或混血。正式 AI 模块应输出“外观相似度”和“混合外观特征”，并明确不是血统鉴定。血统判断仍需血统证书或 DNA 信息。
+## 重要边界
+
+PawID **不会**把照片结果表述成血统鉴定。
+
+照片只能用于“外观相似度”判断，无法证明：
+- 是否纯种
+- 是否混血
+- 父母品种
+- DNA / 血统关系
+
+界面中的“外观特征较集中 / 相似度较分散”只描述模型的概率分布，不等于纯种或混血结论。
+
+## AI 模型
+
+v0.2 使用 `rafiazarin/multitask-unet-oxford-pets` 的 EfficientNet-B0 U-Net ONNX 模型，在浏览器通过 ONNX Runtime Web 本地运行。
+
+模型能力包括：
+- 37 类宠物品种分类
+- 宠物 / 背景分割
+- 输入分布基础检查
+
+模型作者报告的 held-out test：
+- breed top-1 accuracy: 92.4%
+- pet IoU: 0.924
+- species accuracy: 99.6%
+
+这些数字只代表该模型在其测试集上的表现，不代表真实用户照片一定达到同等准确率。
+
+### Attribution / License
+
+Model / demo code source:
+- https://github.com/rafiazarin/multitask-unet-oxford-pets
+- code license: MIT
+
+Training dataset:
+- Oxford-IIIT Pet
+- CC BY-SA 4.0; original image copyright remains with image owners
+
+The model card states that no separate license is declared for the model weights. PawID loads the hosted ONNX weights from the model repository at runtime and documents the upstream source here.
+
+## 隐私
+
+宠物照片直接在浏览器里处理。PawID v0.2 不把上传照片发送到 PawID 服务端。
+
+首次使用会从 Hugging Face 下载约 30MB 的 ONNX 模型，并从 jsDelivr 加载 ONNX Runtime Web。
 
 ## 下一步
-接入安全的服务端视觉模型接口，返回：
-- Top 3 品种外观相似度
-- 毛色 / 毛长 / 眼睛 / 耳型 / 脸型 / 体型
-- 外观特征集中度 / 混合特征提示
 
-不要把模型 API Key 放在前端。
+- v0.3：更细致的毛色 / 眼睛 / 耳型 / 脸型视觉特征模型
+- 身份卡主题模板
+- AI 背景与宠物护照风
+- 成长时间线

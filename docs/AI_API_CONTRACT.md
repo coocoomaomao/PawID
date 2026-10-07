@@ -1,38 +1,46 @@
-# PawID AI Analysis API Contract
+# PawID v0.2 AI Architecture
 
-PawID 前端不会保存模型密钥。真实视觉识别通过服务端 `POST /api/analyze` 完成。
+PawID v0.2 不再依赖服务端 `/api/analyze`。
 
-## Request
+## Current architecture
 
-`multipart/form-data`
-
-- `photos`: 1–3 张 JPG / PNG / WebP
-- `species`: 猫 / 狗
-- `name`: 可选
-
-## Response
-
-```json
-{
-  "breeds": [
-    {"name": "英国短毛猫", "similarity": 0.62},
-    {"name": "美国短毛猫", "similarity": 0.21},
-    {"name": "Domestic Shorthair", "similarity": 0.17}
-  ],
-  "traits": {
-    "coatColor": "黑色",
-    "coatLength": "短毛",
-    "eyeColor": "金黄色",
-    "earShape": "直立耳",
-    "faceShape": "圆脸偏楔形",
-    "bodyType": "中等"
-  },
-  "mixAssessment": "存在多品种外观特征",
-  "confidence": "medium",
-  "disclaimer": "仅基于照片进行外观相似度分析，不代表纯种、混血或血统证明。"
-}
+```
+User photo
+   ↓
+Browser
+   ↓
+ONNX Runtime Web
+   ↓
+EfficientNet-B0 U-Net
+   ├─ 37-breed classification
+   └─ pet/background segmentation
+   ↓
+PawID result + passport photo
 ```
 
-## Product boundary
+照片不上传 PawID 服务端。
 
-照片不能证明血统。PawID 只输出“外观相似度”和“混合外观特征提示”，不能把结果表述为 DNA / 血统鉴定。
+## Model source
+
+`rafiazarin/multitask-unet-oxford-pets`
+
+Runtime ONNX asset:
+`pets_unet.onnx`
+
+## Result semantics
+
+PawID uses these terms:
+- 品种**外观相似度**
+- 外观特征较集中
+- 外观相似度较分散
+- 低置信度 / 陌生分布提示
+
+PawID does **not** claim:
+- purebred status
+- mixed-breed proof
+- parent breeds
+- DNA ancestry
+
+## Future server API
+
+A server API may be added later for optional richer visual traits, but it must remain opt-in and must never expose provider keys in frontend code.

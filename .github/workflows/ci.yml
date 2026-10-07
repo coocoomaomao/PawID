@@ -16,7 +16,7 @@ jobs:
       - name: Validate JavaScript
         run: |
           node --check app.js
-          node --check api-client.js
+          node --check breed-ai.js
           node --check sw.js
       - name: Validate required files
         run: |

@@ -15,7 +15,7 @@
         <div class="brand-mark" aria-hidden="true">🐾</div>
         <div><b>PawID</b><span>毛球身份卡</span></div>
       </div>
-      <span class="lab-badge">喵造实验室 · 008</span>
+      <span class="lab-badge">喵造实验室 · 008 · v0.2</span>
     </header>
 
     <main>
@@ -24,7 +24,7 @@
           <span class="eyebrow">PET IDENTITY LAB</span>
           <h1>它陪了你这么久，<br><em>你真的知道它是什么猫吗？</em></h1>
           <p>上传 1–3 张照片，分析外观特征、品种相似度，并生成专属毛球身份卡。</p>
-          <div class="hero-pills"><span>猫 / 狗</span><span>本地预览</span><span>证件照生成</span></div>
+          <div class="hero-pills"><span>真实 AI</span><span>照片不上传</span><span>37 品种外观相似度</span><span>AI 抠图证件照</span></div>
         </div>
         <div class="mascot-card">
           <svg viewBox="0 0 220 220" role="img" aria-label="墨团黑猫">
@@ -42,7 +42,7 @@
 
       <section class="panel upload-panel" id="uploadPanel">
         <div class="section-title"><div><small>STEP 01</small><h2>上传毛孩子照片</h2></div><span>最多 3 张</span></div>
-        <p class="hint">建议：正脸 + 侧脸 + 全身照。照片越清晰，未来接入视觉模型后的判断越稳定。</p>
+        <p class="hint">建议：正脸 + 侧脸 + 全身照。v0.2 会综合最多 3 张照片进行本地 AI 分析。</p>
         <div class="photo-grid" id="photoGrid"></div>
         <label class="upload-box" id="uploadBox">
           <input id="photoInput" type="file" accept="image/*" multiple hidden />
@@ -63,15 +63,15 @@
       </section>
 
       <section class="panel result-panel" id="resultPanel" hidden>
-        <div class="section-title"><div><small>STEP 03</small><h2>外观分析报告</h2></div><span class="status">接口待接入</span></div>
-        <div class="notice"><b>AI 品种识别尚未启用</b><p>独立应用需要安全的服务端视觉模型接口。当前先展示结果页结构和证件照 / 身份卡功能。</p></div>
+        <div class="section-title"><div><small>STEP 03</small><h2>外观分析报告</h2></div><span class="status" id="resultStatus">等待分析</span></div>
+        <div class="notice" id="analysisNotice"><b>本地 AI 外观相似度分析</b><p>模型会从已知 37 类宠物品种中给出相似度；结果不是血统鉴定。</p></div>
         <div class="breed-grid" id="breedGrid">
           <div class="breed-card ghost"><span>TOP 1</span><b>等待视觉模型分析</b><div class="bar"><i style="width:0%"></i></div></div>
           <div class="breed-card ghost"><span>TOP 2</span><b>—</b><div class="bar"><i style="width:0%"></i></div></div>
           <div class="breed-card ghost"><span>TOP 3</span><b>—</b><div class="bar"><i style="width:0%"></i></div></div>
         </div>
         <div class="traits">
-          <span>毛色：待分析</span><span>毛长：待分析</span><span>眼睛：待分析</span><span>脸型：待分析</span>
+          <span>被毛主色：待分析</span><span>物种：待分析</span><span>模型范围：37 品种</span>
         </div>
       </section>
 
@@ -82,15 +82,17 @@
       </section>
 
       <section class="panel passport-panel" id="passportPanel" hidden>
-        <div class="section-title"><div><small>STEP 05</small><h2>四色宠物证件照</h2></div><span>自动裁切</span></div>
+        <div class="section-title"><div><small>STEP 05</small><h2>四色宠物证件照</h2></div><span>AI 抠图换背景</span></div>
         <div class="passport-grid" id="passportGrid"></div>
-        <p class="hint">点击任意证件照即可下载 1024×1024 PNG。</p>
+        <p class="hint">点击任意证件照即可下载 1024×1024 PNG。v0.2 使用宠物分割模型去除原背景。</p>
       </section>
     </main>
 
     <footer><b>PawID 毛球身份卡</b><span>喵造实验室 · 记录身份，也记录陪伴</span></footer>
   </div>
   <div class="toast" id="toast"></div>
-  <script src="api-client.js"></script>\n  <script src="app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.30.0/dist/ort.wasm.min.js"></script>
+  <script src="breed-ai.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

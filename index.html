@@ -15,16 +15,18 @@
         <div class="brand-mark" aria-hidden="true">🐾</div>
         <div><b>PawID</b><span>毛球身份卡</span></div>
       </div>
-      <span class="lab-badge">喵造实验室 · 008 · v0.2</span>
+      <span class="lab-badge">喵造实验室 · 008 · v0.3</span>
     </header>
 
     <main>
       <section class="hero">
         <div class="hero-copy">
           <span class="eyebrow">PET IDENTITY LAB</span>
-          <h1>它陪了你这么久，<br><em>你真的知道它是什么猫吗？</em></h1>
-          <p>上传 1–3 张照片，分析外观特征、品种相似度，并生成专属毛球身份卡。</p>
-          <div class="hero-pills"><span>真实 AI</span><span>照片不上传</span><span>37 品种外观相似度</span><span>AI 抠图证件照</span></div>
+          <h1>一张照片是可爱，<br><em>三张照片是一份毛球档案。</em></h1>
+          <p>本地 AI 分析品种外观相似度，再把多图一致性、被毛色板与视觉纹理做成一张可以分享的《毛球身份鉴定报告》。</p>
+          <div class="hero-pills">
+            <span>真实本地 AI</span><span>照片不上传</span><span>多图一致性</span><span>被毛色板</span><span>3:4 分享报告</span>
+          </div>
         </div>
         <div class="mascot-card">
           <svg viewBox="0 0 220 220" role="img" aria-label="墨团黑猫">
@@ -36,13 +38,13 @@
             <path d="M116 151q8-6 16 0-8 9-16 0Z" fill="#e5a39b"/><path d="M106 161q18 17 36 0" fill="none" stroke="#f0d1ca" stroke-width="5" stroke-linecap="round"/>
             <path d="M111 60q10-23 20 2-8-4-10 10-4-11-10-12Z" fill="#6be0b1"/>
           </svg>
-          <div class="mascot-note">“正在研究这张可爱的脸……”</div>
+          <div class="mascot-note">“先别急着说混血，本猫只接受外观相似度。”</div>
         </div>
       </section>
 
       <section class="panel upload-panel" id="uploadPanel">
         <div class="section-title"><div><small>STEP 01</small><h2>上传毛孩子照片</h2></div><span>最多 3 张</span></div>
-        <p class="hint">建议：正脸 + 侧脸 + 全身照。v0.2 会综合最多 3 张照片进行本地 AI 分析。</p>
+        <p class="hint">推荐：正脸 + 侧脸 + 全身照。v0.3 会综合多张照片，还会比较每张照片的识别结果是否一致。</p>
         <div class="photo-grid" id="photoGrid"></div>
         <label class="upload-box" id="uploadBox">
           <input id="photoInput" type="file" accept="image/*" multiple hidden />
@@ -58,33 +60,81 @@
           <label>年龄<input id="petAge" placeholder="例如：3岁" /></label>
           <label>体重（kg）<input id="petWeight" type="number" step="0.1" min="0" placeholder="5.2" /></label>
         </div>
-        <button class="primary" id="analyzeBtn">开始 AI 外观分析 <span>→</span></button>
-        <p class="model-note">当前 v0.1 已完成完整前端流程。真实品种识别接口尚未接入，因此不会伪造 AI 结果。</p>
+        <button class="primary" id="analyzeBtn">开始本地 AI 身份分析 <span>→</span></button>
+        <div class="ai-status-card" id="aiStatusCard">
+          <div class="ai-status-top"><b id="aiStatus">模型将在第一次分析时加载</b><span id="aiProgressText">约 30MB</span></div>
+          <div class="ai-progress"><i id="aiProgressBar"></i></div>
+        </div>
+        <p class="model-note">照片只在浏览器本地分析。结果描述的是外观相似度与图像统计，不代表 DNA 或血统鉴定。</p>
       </section>
 
       <section class="panel result-panel" id="resultPanel" hidden>
-        <div class="section-title"><div><small>STEP 03</small><h2>外观分析报告</h2></div><span class="status" id="resultStatus">等待分析</span></div>
-        <div class="notice" id="analysisNotice"><b>本地 AI 外观相似度分析</b><p>模型会从已知 37 类宠物品种中给出相似度；结果不是血统鉴定。</p></div>
+        <div class="section-title"><div><small>STEP 03</small><h2>AI 外观相似度</h2></div><span class="status" id="resultStatus">等待分析</span></div>
+        <div class="notice" id="analysisNotice"><b>本地 AI 分析</b><p>模型会从 37 个已知猫狗品种中给出外观相似度。</p></div>
         <div class="breed-grid" id="breedGrid">
-          <div class="breed-card ghost"><span>TOP 1</span><b>等待视觉模型分析</b><div class="bar"><i style="width:0%"></i></div></div>
+          <div class="breed-card ghost"><span>TOP 1</span><b>等待分析</b><div class="bar"><i style="width:0%"></i></div></div>
           <div class="breed-card ghost"><span>TOP 2</span><b>—</b><div class="bar"><i style="width:0%"></i></div></div>
           <div class="breed-card ghost"><span>TOP 3</span><b>—</b><div class="bar"><i style="width:0%"></i></div></div>
         </div>
-        <div class="traits">
-          <span>被毛主色：待分析</span><span>物种：待分析</span><span>模型范围：37 品种</span>
+      </section>
+
+      <section class="panel visual-panel" id="visualPanel" hidden>
+        <div class="section-title"><div><small>STEP 04</small><h2>视觉档案</h2></div><span>v0.3 新增</span></div>
+        <div class="visual-grid">
+          <article class="metric-card">
+            <small>多图一致性</small>
+            <strong id="consistencyScore">—</strong>
+            <p id="consistencyLabel">上传 2–3 张照片后可比较</p>
+          </article>
+          <article class="metric-card">
+            <small>被毛纹理</small>
+            <strong id="textureScore">—</strong>
+            <p id="textureLabel">等待分析</p>
+          </article>
+        </div>
+        <div class="palette-wrap">
+          <div class="mini-title"><b>被毛视觉色板</b><span>基于宠物分割区域的像素聚类</span></div>
+          <div class="palette" id="coatPalette"></div>
+        </div>
+        <div class="traits" id="traitPills"></div>
+        <div class="photo-analysis-list" id="photoAnalysisList"></div>
+      </section>
+
+      <section class="panel supplement-panel" id="supplementPanel" hidden>
+        <div class="section-title"><div><small>STEP 05</small><h2>主人补充特征</h2></div><span>不冒充 AI</span></div>
+        <p class="hint">眼睛颜色、耳型、脸型目前没有专门可靠模型，所以这里让主人自己确认；这些信息会进入最终报告。</p>
+        <div class="form-grid">
+          <label>毛长
+            <select id="coatLength"><option value="">未填写</option><option>短毛</option><option>中长毛</option><option>长毛</option><option>无毛 / 极短毛</option></select>
+          </label>
+          <label>眼睛
+            <select id="eyeColor"><option value="">未填写</option><option>金色 / 黄色</option><option>绿色</option><option>蓝色</option><option>铜色 / 琥珀色</option><option>异瞳</option><option>其他</option></select>
+          </label>
+          <label>耳型
+            <select id="earShape"><option value="">未填写</option><option>直立耳</option><option>折耳</option><option>大耳</option><option>垂耳</option><option>卷耳</option><option>其他</option></select>
+          </label>
+          <label>脸型
+            <select id="faceShape"><option value="">未填写</option><option>圆脸</option><option>楔形脸</option><option>长脸</option><option>扁脸</option><option>其他</option></select>
+          </label>
         </div>
       </section>
 
+      <section class="panel report-panel" id="reportPanel" hidden>
+        <div class="section-title"><div><small>STEP 06</small><h2>毛球身份鉴定报告</h2></div><span>3:4 分享图</span></div>
+        <canvas id="reportCanvas" width="900" height="1200"></canvas>
+        <button class="secondary" id="downloadReportBtn">下载身份鉴定报告 PNG</button>
+      </section>
+
       <section class="panel id-panel" id="idPanel" hidden>
-        <div class="section-title"><div><small>STEP 04</small><h2>毛球身份卡</h2></div><span>可分享</span></div>
+        <div class="section-title"><div><small>STEP 07</small><h2>毛球身份卡</h2></div><span>可分享</span></div>
         <canvas id="idCanvas" width="900" height="1200"></canvas>
         <button class="secondary" id="downloadIdBtn">下载身份卡 PNG</button>
       </section>
 
       <section class="panel passport-panel" id="passportPanel" hidden>
-        <div class="section-title"><div><small>STEP 05</small><h2>四色宠物证件照</h2></div><span>AI 抠图换背景</span></div>
+        <div class="section-title"><div><small>STEP 08</small><h2>四色宠物证件照</h2></div><span>AI 抠图换背景</span></div>
         <div class="passport-grid" id="passportGrid"></div>
-        <p class="hint">点击任意证件照即可下载 1024×1024 PNG。v0.2 使用宠物分割模型去除原背景。</p>
+        <p class="hint">点击任意证件照即可下载 1024×1024 PNG。</p>
       </section>
     </main>
 

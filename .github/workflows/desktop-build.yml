@@ -1,0 +1,73 @@
+name: Desktop Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "package.json"
+      - "electron/**"
+      - "build/**"
+      - "scripts/**"
+      - ".github/workflows/desktop-build.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  windows-installer:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install desktop dependencies
+        run: npm install
+
+      - name: Build Windows installer
+        run: npm run dist:win
+
+      - name: Collect installer
+        shell: pwsh
+        run: |
+          $version = node -p "require('./package.json').version"
+          New-Item -ItemType Directory -Force -Path release-files | Out-Null
+          $installer = Get-ChildItem -Path dist -Filter "*.exe" | Select-Object -First 1
+          if (-not $installer) { throw "Windows installer not found" }
+          $target = "release-files/PawID-Setup-v$version.exe"
+          Copy-Item $installer.FullName -Destination $target
+          Write-Host "Installer: $target"
+          Get-ChildItem release-files
+
+      - name: Upload Windows installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PawID-Windows
+          path: release-files/*.exe
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish GitHub Release
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $version = node -p "require('./package.json').version"
+          $tag = "v$version"
+          $asset = "release-files/PawID-Setup-v$version.exe"
+          if (gh release view $tag --repo "${{ github.repository }}" 2>$null) {
+            gh release upload $tag $asset --clobber --repo "${{ github.repository }}"
+          } else {
+            gh release create $tag $asset `
+              --repo "${{ github.repository }}" `
+              --target "${{ github.sha }}" `
+              --title "PawID 毛球身份卡 v$version" `
+              --notes "Windows x64 安装版。双击 EXE 即可安装。PawID 的宠物照片分析在本机浏览器引擎中运行；首次进行 AI 分析时需要联网下载模型资源。"
+          }

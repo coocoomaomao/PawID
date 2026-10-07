@@ -68,3 +68,15 @@ The model card states that no separate license is declared for the model weights
 - 身份卡主题模板
 - AI 背景与宠物护照风
 - 成长时间线
+
+
+## GitHub Pages 首次开启
+
+由于仓库的 GitHub App 权限不能创建 Pages site，第一次需要仓库所有者手动开启：
+
+1. 打开 Repository **Settings**
+2. 进入 **Pages**
+3. 在 **Build and deployment** 中将 Source 选择为 **GitHub Actions**
+4. 回到 **Actions → Deploy Pages → Run workflow**
+
+首次开启完成后，可再把 Pages workflow 恢复为 main 分支自动发布。
